@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/button_navigation.dart';
 
 class HomeQuiz extends StatelessWidget {
-  const HomeQuiz({super.key});
+  const HomeQuiz(this.startQuiz, {super.key});
+
+  final void Function() startQuiz;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,26 @@ class HomeQuiz extends StatelessWidget {
         SizedBox(
           height: 40,
         ),
-        ButtonNavigation(),
+        OutlinedButton.icon(
+          onPressed: startQuiz,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.amber.shade900,
+            side: BorderSide(color: Colors.white, width: 1),
+            padding: EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
+          ),
+          label: Text(
+            "Start Quiz",
+            style: TextStyle(fontSize: 20),
+          ),
+          iconAlignment: IconAlignment.end,
+          icon: Icon(
+            Icons.arrow_right_alt,
+            size: 30,
+            weight: 400,
+            color: Colors.white,
+          ),
+        ),
       ],
     );
   }

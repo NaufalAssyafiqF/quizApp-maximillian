@@ -10,7 +10,13 @@ class GradientContainer extends StatefulWidget {
 }
 
 class _GradientContainerState extends State<GradientContainer> {
-  Widget activeScreen = HomeQuiz();
+  Widget? activeScreen;
+
+  @override
+  void initState() {
+    activeScreen = HomeQuiz(switchScreen);
+    super.initState();
+  }
 
   void switchScreen() {
     setState(() {
