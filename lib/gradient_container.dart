@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/home_quiz.dart';
 import 'package:quiz_app/question_screen.dart';
+import 'package:quiz_app/result_screen.dart';
 
 class GradientContainer extends StatefulWidget {
   const GradientContainer({super.key});
@@ -12,15 +14,33 @@ class GradientContainer extends StatefulWidget {
 class _GradientContainerState extends State<GradientContainer> {
   Widget? activeScreen;
 
+  List<String> selectedAnswers = [];
+
   @override
   void initState() {
     activeScreen = HomeQuiz(switchScreen);
     super.initState();
   }
 
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setState(
+        () {
+          activeScreen = ResultScreen(
+            chosenAnswer: selectedAnswers,
+          );
+        },
+      );
+    }
+  }
+
   void switchScreen() {
     setState(() {
-      activeScreen = QuestionScreen();
+      activeScreen = QuestionScreen(
+        onSelectAnswer: chooseAnswer,
+      );
     });
   }
 
