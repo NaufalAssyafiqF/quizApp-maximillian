@@ -22,6 +22,15 @@ class _GradientContainerState extends State<GradientContainer> {
     super.initState();
   }
 
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = QuestionScreen(
+        onSelectAnswer: chooseAnswer,
+      );
+    });
+  }
+
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
 
@@ -30,6 +39,7 @@ class _GradientContainerState extends State<GradientContainer> {
         () {
           activeScreen = ResultScreen(
             chosenAnswer: selectedAnswers,
+            onRestart: restartQuiz,
           );
         },
       );
@@ -47,6 +57,7 @@ class _GradientContainerState extends State<GradientContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [

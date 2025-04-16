@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/data/questions.dart';
-import 'package:quiz_app/question_summary.dart';
+import 'package:quiz_app/question_summary/question_summary.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({super.key, required this.chosenAnswer});
+  const ResultScreen(
+      {super.key, required this.chosenAnswer, required this.onRestart});
 
   final List<String> chosenAnswer;
+  final void Function() onRestart;
 
   List<Map<String, Object>> getSummaryData() {
     final List<Map<String, Object>> summary = [];
@@ -25,11 +27,17 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestion = questions.length;
+    final numCorrectQuestion = summaryData.where((data) {
+      return data["user_answer"] == data["correct_answer"];
+    }).length;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "You answer x out of y question correctly!",
+          "You answer $numCorrectQuestion out of $numTotalQuestion question correctly!",
           style: GoogleFonts.lato(
               color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400),
           textAlign: TextAlign.center,
@@ -47,8 +55,16 @@ class ResultScreen extends StatelessWidget {
         SizedBox(
           height: 30,
         ),
-        QuestionSummary(summaryData: getSummaryData()),
-        TextButton(onPressed: () {}, child: Text("Result Quiz!"))
+        QuestionSummary(summaryData: summaryData),
+        SizedBox(
+          height: 20,
+        ),
+        TextButton.icon(
+          onPressed: onRestart,
+          style: TextButton.styleFrom(foregroundColor: Colors.white),
+          icon: Icon(Icons.refresh, color: Colors.white),
+          label: Text("Restart Quiz"),
+        )
       ],
     );
   }
